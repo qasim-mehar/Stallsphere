@@ -1,0 +1,192 @@
+﻿@model Stallsphere.Models.Entities.Stall
+@{
+    ViewData["Title"] = "Add Stall";
+}
+
+@section Styles {
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #8338ec;
+            --accent: #ff006e;
+            --dark: #0f172a;
+            --darker: #0a1120;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --card-bg: rgba(15, 23, 42, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            /* Text colors */
+            --primary-text-color: #f8fafc;
+            --secondary-text-color: rgba(255, 255, 255, 0.7);
+            --accent-color: #3a86ff;
+            --accent-color-dark: #2667cc;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, var(--primary-dark) 100%);
+            color: var(--light);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .admin-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--card-border);
+            width: 100%;
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            background: var(--gradient);
+            color: white;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+
+        .input-box {
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            color: var(--light);
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+            .input-box:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
+                outline: none;
+                background-color: rgba(15, 23, 42, 0.8);
+            }
+
+            .input-box::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+        .submit-button {
+            background: var(--gradient);
+            transition: all 0.3s ease;
+            color: white;
+            border: none;
+        }
+
+            .submit-button:hover {
+                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(58, 134, 255, 0.3);
+            }
+
+        .validation-message {
+            color: #ff6b6b;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .dropdown-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        label {
+            color: var(--light);
+        }
+    </style>
+}
+
+<div class="admin-container">
+    <div class="admin-header p-6">
+        <h1 class="text-2xl md:text-3xl font-bold">Add Stall's Info</h1>
+    </div>
+
+    <div class="p-6 md:p-8">
+        <form asp-action="AddStallInfo" asp-controller="AdminDashboard" method="post" class="space-y-6">
+            <div asp-validation-summary="ModelOnly" class="text-red-400 mb-4"></div>
+
+            <div class="user-details space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="StallNo" class="block text-sm font-medium mb-1">Stall Number</label>
+                        <input asp-for="StallNo" class="input-box w-full px-4 py-2" placeholder="Enter stall number" />
+                        <span asp-validation-for="StallNo" class="validation-message"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Price" class="block text-sm font-medium mb-1">Price (PKR)</label>
+                        <input asp-for="Price" type="number" step="0.01" class="input-box w-full px-4 py-2" placeholder="Enter price" />
+                        <span asp-validation-for="Price" class="validation-message"></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="BestFor" class="block text-sm font-medium mb-1">Best For</label>
+                        <input asp-for="BestFor" class="input-box w-full px-4 py-2" placeholder="FOOD, TOYS, etc." />
+                        <span asp-validation-for="BestFor" class="validation-message"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="LocationArea" class="block text-sm font-medium mb-1">Location Area</label>
+                        <input asp-for="LocationArea" class="input-box w-full px-4 py-2" placeholder="Enter location area" />
+                        <span asp-validation-for="LocationArea" class="validation-message"></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="Area" class="block text-sm font-medium mb-1">Area (sq ft)</label>
+                        <input asp-for="Area" type="number" step="0.01" class="input-box w-full px-4 py-2" placeholder="Enter area in square feet" />
+                        <span asp-validation-for="Area" class="validation-message"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Status" class="block text-sm font-medium mb-1">Status</label>
+                        <select asp-for="Status" class="input-box dropdown-select w-full px-4 py-2">
+                            <option value="">Select Status</option>
+                            <option value="Available">Available</option>
+                            <option value="Booked">Booked</option>
+                        </select>
+                        <span asp-validation-for="Status" class="validation-message"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="Description" class="block text-sm font-medium mb-1">Description</label>
+                    <textarea asp-for="Description" class="input-box w-full px-4 py-2 h-24" placeholder="Enter stall description"></textarea>
+                    <span asp-validation-for="Description" class="validation-message"></span>
+                </div>
+
+                <div>
+                    <label asp-for="ImgSrc" class="block text-sm font-medium mb-1">Image URL</label>
+                    <input asp-for="ImgSrc" class="input-box w-full px-4 py-2" placeholder="Enter image URL or path" />
+                    <span asp-validation-for="ImgSrc" class="validation-message"></span>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-4">
+                <button type="submit" class="submit-button px-8 py-3 rounded-lg font-medium text-lg">
+                    Add Stall
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

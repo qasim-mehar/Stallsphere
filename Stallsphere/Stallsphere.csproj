@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- Use the stable EF Core 8 version -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<!-- Add Design for migrations -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4" />
+		<!-- Added packages for Weather API integration -->
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="AboutLibrary">
+	    <HintPath>..\..\AboutLibrary\AboutLibrary\bin\Debug\net8.0\AboutLibrary.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+</Project>

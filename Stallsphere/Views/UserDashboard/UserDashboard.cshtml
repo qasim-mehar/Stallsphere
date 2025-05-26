@@ -1,0 +1,734 @@
+﻿@model List<Stallsphere.Models.Entities.Stall>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stallsphere - Available Stalls</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #8338ec;
+            --accent: #ff006e;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --card-gradient: linear-gradient(135deg, rgba(58, 134, 255, 0.1) 0%, rgba(131, 56, 236, 0.1) 100%);
+            --stats-gradient-1: linear-gradient(135deg, #3a86ff 0%, #2667cc 100%);
+            --stats-gradient-2: linear-gradient(135deg, #8338ec 0%, #6025aa 100%);
+            --stats-gradient-3: linear-gradient(135deg, #ff006e 0%, #d10059 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: var(--gradient);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            font-size: 28px;
+        }
+        
+        .announcement {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 10px 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .announcement p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .announcement i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            padding: 40px 0 20px;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-card:hover::before {
+            opacity: 0.9;
+        }
+        
+        .stat-card.total::before {
+            background: var(--stats-gradient-1);
+        }
+        
+        .stat-card.booked::before {
+            background: var(--stats-gradient-2);
+        }
+        
+        .stat-card.available::before {
+            background: var(--stats-gradient-3);
+        }
+        
+        .stat-card h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .stat-card .value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--light);
+        }
+        
+        .stat-card .icon {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        /* Stalls Section */
+        .stalls-section {
+            padding: 40px 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .section-header p {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .stalls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .stall-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .stall-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stall-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--card-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .stall-card:hover::after {
+            opacity: 1;
+        }
+        
+        .stall-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stall-content {
+            padding: 20px;
+        }
+        
+        .stall-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stall-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .stall-price {
+            background: var(--gradient);
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        .stall-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            height: 60px;
+            overflow: hidden;
+        }
+        
+        .stall-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .stall-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stall-tag i {
+            font-size: 12px;
+            color: var(--primary);
+        }
+        
+        .stall-action {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .stall-btn {
+            background: var(--gradient);
+            color: var(--light);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .stall-btn i {
+            transition: transform 0.3s ease;
+        }
+        
+        .stall-btn:hover i {
+            transform: translateX(5px);
+        }
+        
+        .stall-btn:hover {
+            box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 60px 0 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .footer-column .logo {
+            margin-bottom: 20px;
+        }
+        
+        .footer-column p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .footer-link {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-link i {
+            font-size: 12px;
+            color: var(--primary);
+        }
+        
+        .footer-link:hover {
+            color: var(--light);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: var(--gradient);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Background Elements */
+        .bg-element {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.2;
+            z-index: -1;
+            transition: all 5s ease;
+        }
+        
+        .bg-element-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 10%;
+            left: 5%;
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        .bg-element-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            bottom: 15%;
+            right: 10%;
+            animation: float 18s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+        
+        .bg-element-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent);
+            bottom: 30%;
+            left: 20%;
+            animation: float 20s ease-in-out infinite;
+            animation-delay: 4s;
+        }
+        
+        @@keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5%, 5%) rotate(5deg); }
+            50% { transform: translate(0, 10%) rotate(0deg); }
+            75% { transform: translate(-5%, 5%) rotate(-5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        
+        /* Responsive Styles */
+        @@media (max-width: 768px) {
+            .stalls-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+        
+        @@media (max-width: 480px) {
+            .stalls-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-card .value {
+                font-size: 28px;
+            }
+            
+            .section-header h2 {
+                font-size: 26px;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        .slide-up {
+            animation: slideUp 1s ease forwards;
+        }
+        
+        @@keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @@keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Stagger Animation Delay */
+        .stagger-animation > * {
+            opacity: 0;
+        }
+        
+        .stagger-animation.visible > *:nth-child(1) { animation: slideUp 0.5s ease forwards 0.1s; }
+        .stagger-animation.visible > *:nth-child(2) { animation: slideUp 0.5s ease forwards 0.2s; }
+        .stagger-animation.visible > *:nth-child(3) { animation: slideUp 0.5s ease forwards 0.3s; }
+        .stagger-animation.visible > *:nth-child(4) { animation: slideUp 0.5s ease forwards 0.4s; }
+        .stagger-animation.visible > *:nth-child(5) { animation: slideUp 0.5s ease forwards 0.5s; }
+        .stagger-animation.visible > *:nth-child(6) { animation: slideUp 0.5s ease forwards 0.6s; }
+        .stagger-animation.visible > *:nth-child(7) { animation: slideUp 0.5s ease forwards 0.7s; }
+        .stagger-animation.visible > *:nth-child(8) { animation: slideUp 0.5s ease forwards 0.8s; }
+        .stagger-animation.visible > *:nth-child(9) { animation: slideUp 0.5s ease forwards 0.9s; }
+        .stagger-animation.visible > *:nth-child(10) { animation: slideUp 0.5s ease forwards 1.0s; }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-element bg-element-1"></div>
+    <div class="bg-element bg-element-2"></div>
+    <div class="bg-element bg-element-3"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="#" class="logo">
+                <i class="fas fa-building"></i>
+                <span>Stallsphere</span>
+            </a>
+            <nav>
+                <a href="#" class="stall-btn">
+                    <i class="fas fa-user"></i>
+                    My Account
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Announcement Banner -->
+        <div class="announcement animate__animated animate__fadeIn">
+            <i class="fas fa-bullhorn"></i>
+            <p>🥳 New on Stallsphere: Instant Stall Booking is Live!</p>
+        </div>
+        
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-container stagger-animation">
+                <div class="stat-card total">
+                    <i class="fas fa-store icon"></i>
+                    <h2>Total Stalls</h2>
+                    <div class="value">@ViewBag.TotalStalls</div>
+                </div>
+                
+                <div class="stat-card booked">
+                    <i class="fas fa-check-circle icon"></i>
+                    <h2>Stalls Booked</h2>
+                    <div class="value">@ViewBag.BookedStalls</div>
+                </div>
+                
+                <div class="stat-card available">
+                    <i class="fas fa-key icon"></i>
+                    <h2>Stalls Available</h2>
+                    <div class="value">@ViewBag.AvailableStalls</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Stalls Section -->
+        <section class="stalls-section">
+            <div class="section-header">
+                <h2>Available Stalls for Rent</h2>
+                <p>Find the perfect stall for your business needs</p>
+            </div>
+            
+            <div class="stalls-grid stagger-animation">
+                @foreach (var stall in Model.Where(s => s.Status != null && s.Status.Trim().Equals("Available", StringComparison.OrdinalIgnoreCase)))
+                {
+                    <div class="stall-card">
+                        <img src="@stall.ImgSrc" alt="Stall Image" class="stall-image">
+                        <div class="stall-content">
+                            <div class="stall-header">
+                                <h3 class="stall-title">Stall @stall.StallNo</h3>
+                                <span class="stall-price">@stall.Price.ToString("N0") PKR</span>
+                            </div>
+                            <p class="stall-description">@stall.Description</p>
+                            <div class="stall-tags">
+                                <span class="stall-tag">
+                                    <i class="fas fa-tag"></i>
+                                    Best for: @stall.BestFor
+                                </span>
+                                <span class="stall-tag">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    @stall.LocationArea
+                                </span>
+                                <span class="stall-tag">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                    @stall.Area sq.ft
+                                </span>
+                            </div>
+                            <div class="stall-action">
+                                <a href="@Url.Action("RenterInfo", "UserDashboard", new { stallId = stall.StallId })" class="stall-btn">
+                                    Rent Now
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-column">
+                <a href="#" class="logo">
+                    <i class="fas fa-building"></i>
+                    <span>Stallsphere</span>
+                </a>
+                <p>The ultimate platform for stall rental and management. Find your perfect business space today.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Home</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> About Us</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Services</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Contact</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> FAQ</a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Services</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Stall Rental</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Stall Management</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Booking System</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Stall Insights</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i> Support</a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link"><i class="fas fa-phone"></i> +92 123 456 7890</a>
+                    <a href="#" class="footer-link"><i class="fas fa-envelope"></i> info@stallsphere.com</a>
+                    <a href="#" class="footer-link"><i class="fas fa-map-marker-alt"></i> NUML University, Islamabad</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 Stallsphere. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.stagger-animation');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Initialize stagger animations
+            setTimeout(() => {
+                document.querySelector('.stats-container').classList.add('visible');
+            }, 300);
+            
+            // Floating background elements
+            const bgElements = document.querySelectorAll('.bg-element');
+            
+            window.addEventListener('mousemove', function(e) {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                bgElements.forEach(element => {
+                    const speed = 0.05;
+                    const elementX = (window.innerWidth - element.offsetWidth) * x;
+                    const elementY = (window.innerHeight - element.offsetHeight) * y;
+                    
+                    element.style.transform = `translate(${elementX * speed}px, ${elementY * speed}px)`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

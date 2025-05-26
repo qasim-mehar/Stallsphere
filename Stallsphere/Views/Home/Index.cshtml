@@ -1,0 +1,482 @@
+﻿@{
+    ViewData["Title"] = "Stallsphere - Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stallsphere - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #8338ec;
+            --accent: #ff006e;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .gradient-border {
+            position: relative;
+            border-radius: 16px;
+        }
+
+            .gradient-border::before {
+                content: '';
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                border-radius: 18px;
+                background: var(--gradient);
+                z-index: -1;
+            }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @@keyframes floating {
+            0%
+
+        {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-15px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0%
+
+        {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+
+        }
+
+        .glow {
+            filter: drop-shadow(0 0 8px rgba(58, 134, 255, 0.6));
+        }
+
+        .hover-grow {
+            transition: transform 0.3s ease;
+        }
+
+            .hover-grow:hover {
+                transform: translateY(-5px);
+            }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -5px;
+                left: 0;
+                background: var(--gradient);
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 30px;
+            place-items: center;
+        }
+
+        .logo-item {
+            filter: grayscale(100%) brightness(2);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+            .logo-item:hover {
+                filter: grayscale(0) brightness(1);
+                opacity: 1;
+                transform: scale(1.1);
+            }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Floating background elements -->
+    <div class="fixed -z-10 inset-0 overflow-hidden">
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-900 opacity-20 blur-3xl floating" style="animation-delay: 0s;"></div>
+        <div class="absolute top-1/3 right-1/3 w-80 h-80 rounded-full bg-purple-900 opacity-20 blur-3xl floating" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-72 h-72 rounded-full bg-pink-900 opacity-20 blur-3xl floating" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Announcement bar -->
+    <div class="bg-gradient-to-r from-blue-900 to-purple-900 py-2 px-4 text-center text-sm font-medium">
+        <span class="mr-2">🥳</span> New on Stallsphere: Instant Stall Booking is Live!
+    </div>
+
+    <!-- Navigation -->
+    <nav class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+            <a href="#" class="flex items-center">
+                <img src="/assets/logo_numlresize.png" alt="company logo" class="w-14 h-14 mr-3">
+                <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Stallsphere</span>
+            </a>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a asp-controller="Home" asp-action="Product" class="nav-link text-white hover:text-blue-300 transition">Products</a>
+                <a asp-controller="Home" asp-action="Customer" class="nav-link text-white hover:text-blue-300 transition">Customer</a>
+                <a asp-controller="Home" asp-action="Pricing" class="nav-link text-white hover:text-blue-300 transition">Pricing</a>
+                <a asp-controller="Home" asp-action="About" class="nav-link text-white hover:text-blue-300 transition">About Us</a>
+                <a asp-controller="Account" asp-action="Login" class="px-6 py-2 rounded-lg text-white hover:bg-white/10 transition">Login</a>
+                <a asp-controller="Account" asp-action="Login" asp-route-showRegister="true" class="px-6 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition shadow-lg hover:shadow-blue-500/20">
+                    Sign Up
+                </a>
+            </div>
+
+            <button class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="container mx-auto px-6 py-20">
+        <div class="flex flex-col lg:flex-row items-center justify-between">
+            <div class="lg:w-1/2 mb-16 lg:mb-0">
+                <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+                    <span class="gradient-text">Get Your Stall,</span><br>
+                    <span class="text-white">Grow Your Brand</span>
+                </h1>
+                <p class="text-lg text-gray-300 mb-8 max-w-lg">
+                    Secure your stall at top events easily. Quick bookings, best locations — all at your fingertips.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a asp-controller="Account" asp-action="Login" asp-route-showRegister="true" class="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 transition shadow-lg hover:shadow-blue-500/20 pulse">
+                        Get Started <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 relative">
+                <div class="glass-card p-6 rounded-2xl w-full max-w-lg mx-auto">
+                    <img src="/assets/Lined_E_commerce_shopping.png" alt="hero image" class="rounded-xl w-full h-auto object-cover hover-grow transition">
+                </div>
+                <div class="absolute -z-10 -top-10 -right-10 w-64 h-64 rounded-full bg-blue-900/20 blur-3xl"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trusted By Section -->
+    <section class="container mx-auto px-6 py-16">
+        <p class="text-center text-gray-400 mb-10 uppercase text-sm tracking-widest">Top brands trust our platform to secure the best stalls</p>
+        <div class="logo-grid">
+            <img src="/assets/cheezious.png" alt="Brand logo" class="logo-item h-12">
+            <img src="/assets/Untitled.png" alt="Brand logo" class="logo-item h-12">
+            <img src="/assets/softSwirl.jpeg" alt="Brand logo" class="logo-item h-12">
+            <img src="/assets/bravo.png" alt="Brand logo" class="logo-item h-12">
+            <img src="/assets/crumble.png" alt="Brand logo" class="logo-item h-12">
+            <img src="/assets/savour.jpeg" alt="Brand logo" class="logo-item h-12">
+            <img src="/assets/cheezious.png" alt="Brand logo" class="logo-item h-12">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container mx-auto px-6 py-20">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">
+                <span class="gradient-text">Your Ultimate Stall</span>
+                <span class="text-white"> Booking Companion</span>
+            </h2>
+            <a href="#" class="mt-6 inline-block px-6 py-2 rounded-lg border border-white/20 text-white hover:bg-white/10 transition">
+                Explore Features
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="glass-card p-8 rounded-2xl hover-grow transition">
+                <div class="feature-icon">
+                    <img src="/assets/3D_cart.png" alt="" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">Browse Stalls</h3>
+                <p class="text-gray-300 mb-4">
+                    Explore available stalls with detailed location and pricing info.
+                </p>
+                <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center">
+                    Learn More <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="glass-card p-8 rounded-2xl hover-grow transition">
+                <div class="feature-icon">
+                    <img src="/assets/3D_Yields_market_farmers.png" alt="" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">Instant Booking</h3>
+                <p class="text-gray-300 mb-4">
+                    Reserve your stall quickly with our easy online booking system.
+                </p>
+                <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center">
+                    Learn More <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="glass-card p-8 rounded-2xl hover-grow transition">
+                <div class="feature-icon">
+                    <img src="/assets/Lined_E_commerce_shopping.png" alt="" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">Real-Time Availability</h3>
+                <p class="text-gray-300 mb-4">
+                    Check stall availability in real-time — no more guessing or waiting!
+                </p>
+                <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center">
+                    Learn More <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="glass-card p-8 rounded-2xl hover-grow transition">
+                <div class="feature-icon">
+                    <img src="/assets/Lined_Settings_tools_notification.png" alt="" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">Flexible Payment Options</h3>
+                <p class="text-gray-300 mb-4">
+                    Pay securely using multiple payment methods, with instant confirmation.
+                </p>
+                <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center">
+                    Learn More <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="glass-card p-8 rounded-2xl hover-grow transition">
+                <div class="feature-icon">
+                    <img src="/assets/Lined_Voice_ratings_mobile_recorder_recording_app.png" alt="" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">Stall Management Dashboard</h3>
+                <p class="text-gray-300 mb-4">
+                    Track your booking details, invoices, and event updates in one place.
+                </p>
+                <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center">
+                    Learn More <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="glass-card p-8 rounded-2xl hover-grow transition">
+                <div class="feature-icon">
+                    <img src="/assets/Old_School_women_selling_their_hand_made_products_in_stalls.png" alt="" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">Customer Support</h3>
+                <p class="text-gray-300 mb-4">
+                    Get 24/7 help for your bookings — we're just a message away.
+                </p>
+                <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center">
+                    Learn More <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container mx-auto px-6 py-20">
+        <div class="gradient-border rounded-2xl overflow-hidden">
+            <div class="bg-gradient-to-br from-blue-900/50 to-purple-900/50 p-12 rounded-2xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">
+                    Ready to Transform Your Stall Booking Experience?
+                </h2>
+                <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Join thousands of vendors who are growing their business with Stallsphere's cutting-edge platform.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a class="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 transition shadow-lg hover:shadow-blue-500/20" asp-controller="Account" asp-action="Login" asp-route-showRegister="true" class="px-6 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition shadow-lg hover:shadow-blue-500/20">
+                        Get Started Free <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black/20 backdrop-blur-lg border-t border-white/10">
+        <div class="container mx-auto px-6 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div>
+                    <a href="#" class="flex items-center mb-6">
+                        <img src="/assets/logo_numlresize.png" alt="company logo" class="w-10 h-10 mr-3">
+                        <span class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Stallsphere</span>
+                    </a>
+                    <p class="text-gray-400 mb-6">
+                        The future of stall booking and event management for modern vendors.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6 text-lg">Product</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Overview</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Usability Hub</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Customers Page</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Status Page</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6 text-lg">Methodology</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Overview</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Usability Hub</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Customers Page</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Status Page</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6 text-lg">Resources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Overview</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Usability Hub</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Customers Page</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Status Page</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- subfooter -->
+    <div class="bg-black/30 backdrop-blur-sm py-4">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-center md:justify-between items-center">
+            <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                © 2025 Stallsphere. All rights reserved.
+            </p>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-500 hover:text-white text-sm transition">Privacy Policy</a>
+                <a href="#" class="text-gray-500 hover:text-white text-sm transition">Terms & Condition</a>
+                <a href="#" class="text-gray-500 hover:text-white text-sm transition">Security Information</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple animations
+        document.querySelectorAll('.hover-grow').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.style.transform = 'translateY(-5px)';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('button');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                const navLinks = document.querySelector('.nav-links');
+                navLinks.classList.toggle('hidden');
+                navLinks.classList.toggle('flex');
+                navLinks.classList.toggle('flex-col');
+                navLinks.classList.toggle('absolute');
+                navLinks.classList.toggle('top-20');
+                navLinks.classList.toggle('right-0');
+                navLinks.classList.toggle('left-0');
+                navLinks.classList.toggle('bg-black/80');
+                navLinks.classList.toggle('backdrop-blur-lg');
+                navLinks.classList.toggle('p-6');
+                navLinks.classList.toggle('rounded-lg');
+                navLinks.classList.toggle('z-50');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+﻿@model Stallsphere.Models.Entities.Renter
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rent a Stall | Stallsphere</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #8338ec;
+            --accent: #ff006e;
+            --dark: #0f172a;
+            --darker: #0a1120;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --card-bg: rgba(15, 23, 42, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            color: var(--light);
+        }
+
+        .form-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+        }
+
+        .form-header {
+            background: var(--gradient);
+            color: white;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+
+        .input-field {
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+            .input-field:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
+                outline: none;
+                background-color: rgba(15, 23, 42, 0.8);
+            }
+
+            .input-field::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+        .btn-primary {
+            background: var(--gradient);
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(58, 134, 255, 0.3);
+            }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+            .btn-secondary:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                border-color: var(--primary);
+                color: var(--primary);
+            }
+
+        .stall-card {
+            background: rgba(15, 23, 42, 0.5);
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+        }
+
+        .tag {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(58, 134, 255, 0.2);
+        }
+
+        .price {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .text-gray-700 {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @@media (max-width: 768px) {
+            .form-container {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 md:p-8">
+    <div class="form-container w-full max-w-3xl overflow-hidden">
+        <div class="form-header p-6">
+            <h1 class="text-2xl md:text-3xl font-bold">Rent a Stall</h1>
+        </div>
+
+        <div class="p-6 md:p-8">
+            @if (ViewBag.StallDetails != null)
+            {
+                <div class="stall-card mb-8 p-6 rounded-lg">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                        <h2 class="text-xl font-semibold">Stall #@ViewBag.StallDetails.StallNo</h2>
+                        <div class="price text-xl">PKR @ViewBag.StallDetails.Price.ToString("N0")</div>
+                    </div>
+
+                    <p class="text-gray-700 mb-4">@ViewBag.StallDetails.Description</p>
+
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag px-3 py-1 rounded-full text-sm">@ViewBag.StallDetails.BestFor</span>
+                        <span class="tag px-3 py-1 rounded-full text-sm">@ViewBag.StallDetails.LocationArea</span>
+                        <span class="tag px-3 py-1 rounded-full text-sm">@ViewBag.StallDetails.Area sq.ft</span>
+                    </div>
+                </div>
+            }
+
+            <form asp-controller="UserDashboard" asp-action="addRenterInfo" method="post" class="space-y-6">
+                <input type="hidden" name="stallId" value="@ViewBag.StallId" />
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Name</label>
+                        <input type="text" name="Name" required maxlength="100" placeholder="Enter your name"
+                               class="input-field w-full p-3 rounded-lg" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Contact No.</label>
+                        <input type="text" name="ContactNo" pattern="[0-9]{11}" required placeholder="03XXXXXXXXX"
+                               class="input-field w-full p-3 rounded-lg" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Starting Date</label>
+                        <input type="date" name="StartingDate" required
+                               class="input-field w-full p-3 rounded-lg" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Ending Date</label>
+                        <input type="date" name="EndingDate" required
+                               class="input-field w-full p-3 rounded-lg" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">CNIC</label>
+                        <input type="text" name="CNIC" maxlength="15" pattern="[0-9]{13,15}" required
+                               placeholder="e.g. 3520112345678"
+                               class="input-field w-full p-3 rounded-lg" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Address</label>
+                        <input type="text" name="Address" maxlength="250" required placeholder="Enter your address"
+                               class="input-field w-full p-3 rounded-lg" />
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium mb-1">Business Name</label>
+                        <input type="text" name="BusinessName" maxlength="150" required placeholder="Enter your business name"
+                               class="input-field w-full p-3 rounded-lg" />
+                    </div>
+                </div>
+
+                <div class="flex justify-between gap-4 pt-4">
+                    <a href="javascript:history.back()" class="btn-secondary w-1/2 text-center py-3 rounded-lg font-medium">Cancel</a>
+                    <button type="submit" class="btn-primary w-1/2 py-3 text-white rounded-lg font-medium">Rent Stall</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

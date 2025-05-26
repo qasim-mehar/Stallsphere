@@ -1,0 +1,160 @@
+﻿@{
+    ViewData["Title"] = "Available Stalls";
+    // Uses your existing layout
+}
+
+<!-- Main Content -->
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Available Stalls</h1>
+
+    <div class="row" id="stallContainer">
+        <!-- Card 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=crop&h=300&w=600" class="card-img-top" alt="Stall A1">
+                <div class="card-body d-flex flex-column">
+                    <span class="badge bg-secondary mb-3">Economy</span>
+                    <h5 class="card-title">Stall A1</h5>
+                    <p class="card-text">Area: 120 sq ft</p>
+                    <p class="card-price fw-bold">Rent: $500/month</p>
+                    <button class="btn btn-primary mt-auto rent-button">Rent Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1560184897-93b3b3fbb67b?crop=entropy&cs=tinysrgb&fit=crop&h=300&w=600" class="card-img-top" alt="Stall B2">
+                <div class="card-body d-flex flex-column">
+                    <span class="badge bg-primary mb-3">Business</span>
+                    <h5 class="card-title">Stall B2</h5>
+                    <p class="card-text">Area: 150 sq ft</p>
+                    <p class="card-price fw-bold">Rent: $650/month</p>
+                    <button class="btn btn-primary mt-auto rent-button">Rent Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=crop&h=300&w=600" class="card-img-top" alt="Stall C3">
+                <div class="card-body d-flex flex-column">
+                    <span class="badge bg-warning text-dark mb-3">VIP</span>
+                    <h5 class="card-title">Stall C3</h5>
+                    <p class="card-text">Area: 200 sq ft</p>
+                    <p class="card-price fw-bold">Rent: $800/month</p>
+                    <button class="btn btn-primary mt-auto rent-button">Rent Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?crop=entropy&cs=tinysrgb&fit=crop&h=300&w=600" class="card-img-top" alt="Stall D4">
+                <div class="card-body d-flex flex-column">
+                    <span class="badge bg-secondary mb-3">Economy</span>
+                    <h5 class="card-title">Stall D4</h5>
+                    <p class="card-text">Area: 180 sq ft</p>
+                    <p class="card-price fw-bold">Rent: $700/month</p>
+                    <button class="btn btn-primary mt-auto rent-button">Rent Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-text-color: #183b56;
+        --secondary-text-color: #577592;
+        --accent-color: #0f2778;
+        --accent-color-dark: #1d69a3;
+        --padding-inline-section: 20px;
+        --card-bg-color: #ffffff;
+        --button-bg-color: #0f2778;
+        --button-bg-hover: #1d69a3;
+        --border-radius: 16px;
+        --badge-bg-color: #e0e7ef;
+        --badge-text-color: #183b56;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: var(--primary-text-color);
+        background-color: #f0f4f8;
+    }
+
+    .card {
+        background: var(--card-bg-color);
+        border: 1px solid #e0e0e0;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+        transition: transform 0.3s, box-shadow 0.3s;
+        height: 100%;
+    }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+
+    .card-img-top {
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .card-title {
+        color: var(--accent-color);
+        font-weight: 600;
+    }
+
+    .card-text {
+        color: var(--secondary-text-color);
+    }
+
+    .card-price {
+        color: var(--accent-color-dark);
+    }
+
+    .rent-button {
+        background-color: var(--button-bg-color);
+        border: none;
+        transition: background-color 0.3s;
+    }
+
+        .rent-button:hover {
+            background-color: var(--button-bg-hover);
+        }
+
+    .badge {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 5px 14px;
+        border-radius: 12px;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // You can uncomment and use this if you want dynamic loading
+        /*
+        const stalls = [
+            {
+                title: "Stall A1",
+                area: "120 sq ft",
+                rent: "$500/month",
+                category: "Economy",
+                image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=crop&h=300&w=600"
+            },
+            // ... other stall data
+        ];
+
+        const container = document.getElementById('stallContainer');
+        // ... rest of dynamic loading code
+        */
+    </script>
+}

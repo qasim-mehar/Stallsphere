@@ -1,0 +1,311 @@
+﻿@{
+    ViewData["Title"] = "Stall Invoice";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #8338ec;
+            --accent: #ff006e;
+            --dark: #0f172a;
+            --darker: #0a1120;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --card-bg: rgba(15, 23, 42, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+        }
+
+        .invoice-container {
+            max-width: 48rem;
+            margin: 2rem auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--card-border);
+        }
+
+            .invoice-container:hover {
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+                transform: translateY(-2px);
+            }
+
+        .invoice-header {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .invoice-header::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+                transform: rotate(30deg);
+            }
+
+            .invoice-header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                position: relative;
+            }
+
+            .invoice-header p {
+                font-size: 1rem;
+                opacity: 0.9;
+                position: relative;
+            }
+
+        .success-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            animation: pulse 2s infinite;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        @@keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .stall-details {
+            padding: 2rem;
+        }
+
+        .detail-card {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+            .detail-card:hover {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+
+        .detail-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+            .detail-title i {
+                margin-right: 0.5rem;
+                color: var(--primary);
+            }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: var(--light);
+            font-weight: 600;
+        }
+
+        .price-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .stall-image {
+            width: 100%;
+            height: auto;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid var(--card-border);
+        }
+
+            .stall-image:hover {
+                transform: scale(1.02);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+            .action-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
+            }
+
+            .action-button i {
+                margin-right: 0.5rem;
+            }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.3) 50%, rgba(59,130,246,0.1) 100%);
+            margin: 1.5rem 0;
+        }
+
+        .watermark {
+            position: absolute;
+            opacity: 0.05;
+            font-size: 10rem;
+            font-weight: 900;
+            color: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .text-gray-700 {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <div class="watermark">INVOICE</div>
+            <h1>Stall Rental Confirmation</h1>
+            <p>Your stall has been successfully registered</p>
+            <div class="success-badge">
+                <i class="fas fa-check-circle mr-2"></i>
+                Transaction Completed
+            </div>
+        </div>
+
+        <div class="stall-details">
+            <!-- Stall Overview -->
+            <div class="detail-card">
+                <div class="detail-title">
+                    <i class="fas fa-store"></i>
+                    Stall Overview
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Stall Number</div>
+                        <div class="detail-value">@ViewBag.StallNo</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Best For</div>
+                        <div class="detail-value">@ViewBag.BestFor</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Location Area</div>
+                        <div class="detail-value">@ViewBag.LocationArea</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Area</div>
+                        <div class="detail-value">@ViewBag.Area sq.ft</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">@ViewBag.Status</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Price</div>
+                        <div class="price-badge">PKR @ViewBag.Price.ToString("N0")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="detail-card">
+                <div class="detail-title">
+                    <i class="fas fa-align-left"></i>
+                    Description
+                </div>
+                <p class="text-gray-700">@ViewBag.Description</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Action Button -->
+            <div class="text-center">
+                <button onclick="window.location.href='@Url.Action("AdminDashboard", "AdminDashboard")'"
+                        class="action-button">
+                    <i class="fas fa-check"></i>
+                    Confirm & Return to Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

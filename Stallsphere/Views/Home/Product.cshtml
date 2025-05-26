@@ -1,0 +1,478 @@
+﻿@{
+    ViewData["Title"] = "Our Products";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] | Stallsphere</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #8338ec;
+            --accent: #ff006e;
+            --dark: #0f172a;
+            --darker: #0a1120;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --card-bg: rgba(15, 23, 42, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(58, 134, 255, 0.15) 0%, rgba(131, 56, 236, 0.15) 100%);
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+            .product-card:hover {
+                transform: translateY(-10px) rotateX(5deg);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                border-color: rgba(58, 134, 255, 0.3);
+            }
+
+                .product-card:hover .product-image {
+                    transform: scale(1.05) rotate(2deg);
+                }
+
+        .product-image {
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+        }
+
+        .feature-icon {
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .feature-icon {
+            transform: scale(1.2);
+            color: var(--primary);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(58, 134, 255, 0.5);
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        .delay-1 {
+            animation-delay: 0.5s;
+        }
+
+        .delay-2 {
+            animation-delay: 1s;
+        }
+
+        .delay-3 {
+            animation-delay: 1.5s;
+        }
+
+        @@keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in forwards;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-button {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+            .tab-button::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--primary);
+                transition: width 0.3s ease;
+            }
+
+            .tab-button.active::after {
+                width: 100%;
+            }
+
+            .tab-button.active {
+                color: var(--primary);
+            }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+    </style>
+</head>
+<body class="relative">
+    <!-- Floating decorative elements -->
+    <div class="absolute top-20 left-10 w-16 h-16 rounded-full bg-blue-900 opacity-20 floating"></div>
+    <div class="absolute top-1/3 right-20 w-24 h-24 rounded-full bg-purple-800 opacity-15 floating delay-1"></div>
+    <div class="absolute bottom-1/4 left-1/4 w-20 h-20 rounded-full bg-blue-700 opacity-10 floating delay-2"></div>
+
+    <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+        <!-- Hero Section -->
+        <div class="hero-gradient rounded-3xl p-8 md:p-12 mb-16 text-center fade-in">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 glow-text">
+                Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Product Suite</span>
+            </h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                Innovative solutions designed to transform your stall management and marketplace operations.
+            </p>
+        </div>
+
+        <!-- Product Tabs -->
+        <div class="mb-12 fade-in" style="animation-delay: 0.2s">
+            <div class="flex flex-wrap justify-center gap-4 border-b border-gray-800 pb-2">
+                <button class="tab-button active px-6 py-3 font-medium" data-tab="stall-management">Stall Management</button>
+                <button class="tab-button px-6 py-3 font-medium" data-tab="analytics">Analytics Suite</button>
+                <button class="tab-button px-6 py-3 font-medium" data-tab="payment">Payment Solutions</button>
+                <button class="tab-button px-6 py-3 font-medium" data-tab="booking">Booking System</button>
+            </div>
+        </div>
+
+        <!-- Stall Management Tab -->
+        <div id="stall-management" class="tab-content active">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                <div class="product-card p-8 fade-in" style="animation-delay: 0.3s">
+                    <div class="flex justify-center mb-8">
+                        <img src="https://via.placeholder.com/300x200/1e3a8a/ffffff?text=Stall+Manager+Pro"
+                             alt="Stall Manager Pro"
+                             class="product-image rounded-xl w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Stall Manager Pro</h3>
+                    <p class="text-gray-300 mb-6">
+                        Comprehensive stall management solution with real-time inventory tracking, vendor management,
+                        and automated billing.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Real-time stall occupancy tracking</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Automated billing and invoicing</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Vendor performance analytics</span>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                        Learn More
+                    </button>
+                </div>
+
+                <div class="product-card p-8 fade-in" style="animation-delay: 0.4s">
+                    <div class="flex justify-center mb-8">
+                        <img src="https://via.placeholder.com/300x200/1e3a8a/ffffff?text=Marketplace+Hub"
+                             alt="Marketplace Hub"
+                             class="product-image rounded-xl w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Marketplace Hub</h3>
+                    <p class="text-gray-300 mb-6">
+                        Centralized platform for managing multiple stalls with integrated customer engagement tools
+                        and promotional features.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Multi-stall management dashboard</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Customer loyalty programs</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Promotional campaign tools</span>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Suite Tab -->
+        <div id="analytics" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                <div class="product-card p-8">
+                    <div class="flex justify-center mb-8">
+                        <img src="https://via.placeholder.com/300x200/1e3a8a/ffffff?text=Performance+Insights"
+                             alt="Performance Insights"
+                             class="product-image rounded-xl w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Performance Insights</h3>
+                    <p class="text-gray-300 mb-6">
+                        Advanced analytics platform providing real-time business intelligence and stall performance metrics.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Real-time sales analytics</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Customer traffic patterns</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Revenue forecasting</span>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                        Learn More
+                    </button>
+                </div>
+
+                <div class="product-card p-8">
+                    <div class="flex justify-center mb-8">
+                        <img src="https://via.placeholder.com/300x200/1e3a8a/ffffff?text=Inventory+Tracker"
+                             alt="Inventory Tracker"
+                             class="product-image rounded-xl w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Inventory Tracker</h3>
+                    <p class="text-gray-300 mb-6">
+                        Intelligent inventory management system with automated restocking alerts and sales predictions.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Automated stock monitoring</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Predictive restocking</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Vendor performance scoring</span>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Solutions Tab -->
+        <div id="payment" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                <div class="product-card p-8">
+                    <div class="flex justify-center mb-8">
+                        <img src="https://via.placeholder.com/300x200/1e3a8a/ffffff?text=StallPay"
+                             alt="StallPay"
+                             class="product-image rounded-xl w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">StallPay</h3>
+                    <p class="text-gray-300 mb-6">
+                        Integrated payment processing system supporting multiple payment methods with secure transactions.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Credit/Debit card processing</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Mobile wallet integration</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Secure PCI-compliant transactions</span>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                        Learn More
+                    </button>
+                </div>
+
+                <div class="product-card p-8">
+                    <div class="flex justify-center mb-8">
+                        <img src="https://via.placeholder.com/300x200/1e3a8a/ffffff?text=StallWallet"
+                             alt="StallWallet"
+                             class="product-image rounded-xl w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">StallWallet</h3>
+                    <p class="text-gray-300 mb-6">
+                        Digital wallet solution for customers with loyalty rewards and cashless payment options.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Contactless payments</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Loyalty points system</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Personalized promotions</span>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking System Tab -->
+        <div id="booking" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                <div class="product-card p-8">
+                    <div class="flex justify-center mb-8">
+                        <img src="https://via.placeholder.com/300x200/1e3a8a/ffffff?text=StallBooker"
+                             alt="StallBooker"
+                             class="product-image rounded-xl w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">StallBooker</h3>
+                    <p class="text-gray-300 mb-6">
+                        Online stall reservation system with calendar management and automated confirmations.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Online stall reservations</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Calendar synchronization</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Automated reminders</span>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                        Learn More
+                    </button>
+                </div>
+
+                <div class="product-card p-8">
+                    <div class="flex justify-center mb-8">
+                        <img src="https://via.placeholder.com/300x200/1e3a8a/ffffff?text=Event+Manager"
+                             alt="Event Manager"
+                             class="product-image rounded-xl w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Event Manager</h3>
+                    <p class="text-gray-300 mb-6">
+                        Special event stall management with temporary stall allocation and event-specific pricing.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Event-specific stall layouts</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Temporary vendor onboarding</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle feature-icon text-green-400 mr-3"></i>
+                            <span>Event analytics reporting</span>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center fade-in" style="animation-delay: 0.7s">
+            <h2 class="text-3xl font-bold mb-6 glow-text">Ready to transform your stall management?</h2>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8">Discover how our products can streamline your operations and boost your business.</p>
+            <button class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg">
+                Request Demo
+                <i class="fas fa-calendar-check ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and tabs
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                // Show corresponding tab
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Animation trigger
+        document.addEventListener('DOMContentLoaded', function() {
+            // This would be more comprehensive in a real implementation
+            console.log('Products page loaded');
+        });
+    </script>
+</body>
+</html>
