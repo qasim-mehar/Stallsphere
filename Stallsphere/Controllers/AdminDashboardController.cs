@@ -134,6 +134,13 @@ namespace Stallsphere.Controllers
 
             return View("AdminDashboard", data);
         }
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            
+            return RedirectToAction("Index", "Home"); // Redirect to Home/Index
+        }
+
 
 
     }

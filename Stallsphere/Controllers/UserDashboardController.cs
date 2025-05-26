@@ -119,6 +119,12 @@ namespace Stallsphere.Controllers
         //    ViewBag.StallId = stallId;
         //    return View("RenterInfo", model);
         //}
+        [HttpGet]
+        public IActionResult Logout()
+        {
+           
+            return RedirectToAction("Index", "Home"); // Redirect to Home/Index
+        }
 
 
     }
