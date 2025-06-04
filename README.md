@@ -63,7 +63,7 @@
 - ✅ Styling with utility-first CSS (Tailwind)
 - ✅ Generating invoices and managing data flows
 
----
+```
 
 ## 📂 Project Structure
 
@@ -76,27 +76,27 @@ StallSphere/
 ├── wwwroot/
 ├── appsettings.json
 └── Program.cs
-
-
----
+```
 
 ## 🧪 Getting Started
 
 ```bash
-git clone https://github.com/your-username/StallSphere.git
-cd StallSphere
+git clone https://github.com/qasim-mehar/Stallsphere
+cd Stallsphere
 
-    Import the SQL dump to MySQL.
+# Import the SQL dump to MySQL
+mysql -u <username> -p -e "CREATE DATABASE stallsphere;"
+mysql -u <username> -p stallsphere < Database/stallsphere.sql
 
-    Update appsettings.json with your DB connection string.
+# Update appsettings.json with your MySQL connection string
+# Example: "ConnectionStrings": { "DefaultConnection": "Server=localhost;Port=3306;Database=stallsphere;Uid=<username>;Pwd=<password>;" }
 
-    Run the app:
-
+# Run the app
+cd Stallsphere.Web  # Navigate to the web project folder
+dotnet restore
 dotnet run
 
-    Navigate to: https://localhost:5001
+# Navigate to the URL shown in the console (e.g., https://localhost:5001)
 ```
-📄 License
 
-MIT © 2025 Qasim Ali
 <p align="center"> Made with ❤️ by <strong>Qasim Ali</strong> </p> <p align="center"> <a href="https://github.com/qasimali-dev"> <img src="https://img.shields.io/badge/GitHub-Profile-000000?style=for-the-badge&logo=github&logoColor=white"> </a> </p> 
