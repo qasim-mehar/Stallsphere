@@ -49,7 +49,8 @@
 ## 🌐 Preview
 
 <p align="center">
-  <img src="https://your-screenshot-link.com" alt="StallSphere Screenshot" width="600">
+  <img src="Previews\Screenshot 2025-05-26 215555.png" alt="StallSphere Screenshot" width="600">
+  <img src="Previews\Screenshot 2025-05-26 220537.png" alt="StallSphere Screenshot" width="600">
 </p>
 
 ---
